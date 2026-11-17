@@ -1,0 +1,37 @@
+flowchart LR
+  subgraph OT["PLANTA · OT"]
+    S["Sensores IIoT<br/>temperatura · vibración · caudal"]
+    PLC["PLC y control de proceso"]
+    SCADA["SCADA<br/>supervisión"]
+    MES["MES<br/>órdenes · lotes · producción"]
+    CAM["Cámaras de inspección"]
+    EDGE["Edge AI<br/>visión y anomalías"]
+    MNT["IA de mantenimiento<br/>alertas de riesgo"]
+    OP["Operadores y calidad<br/>validan alertas"]
+    S --> PLC --> SCADA --> MES
+    CAM --> EDGE --> OP
+    SCADA --> MNT --> OP
+    OP --> MES
+  end
+
+  subgraph DMZ["ZONA INTERMEDIA INDUSTRIAL"]
+    GW["Pasarela / DMZ industrial<br/>segmentación · permisos · registro"]
+    HIST["Historiador y réplica de datos<br/>acceso controlado"]
+  end
+
+  subgraph IT["NEGOCIO · IT"]
+    ERP["ERP<br/>compras · inventario · finanzas"]
+    CRM["CRM y pedidos"]
+    DATA["Plataforma de datos"]
+    FORECAST["IA de demanda e inventario"]
+    DOC["Asistente documental<br/>trazabilidad y procedimientos"]
+    BIZ["Planificación y logística<br/>decisión humana"]
+    ERP --> DATA
+    CRM --> DATA
+    DATA --> FORECAST --> BIZ
+    DATA --> DOC --> BIZ
+  end
+
+  MES --> GW --> HIST --> DATA
+  ERP --> MES
+  FORECAST --> ERP
